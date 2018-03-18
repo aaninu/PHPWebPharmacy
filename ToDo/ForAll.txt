@@ -1,0 +1,29 @@
+Informații generale:
+  - Platforma va fi disponibilă pe: http://webpharmacy.aninu.xyz/;
+  - Toate modificările vor fi salvate pe github.com/aaninu/PHPWebPharmacy/
+  - Trebuie făcut <Manualul Utilizatorului> pentru platformă;
+  - Codul-sursă scris în platformă va fi însoțit de comentarii;
+  - Pentru securitate vom folosii: <Protect SQL injection> [Aninu];
+  
+Descriere proiect:
+  - Căutare medicamente în platformă;
+  - Afișare informații despre medicamentele existente în platformă (preț, caracteristici, tip, mod de administrare, etc);
+  - Modul de conectare / înregistrare / parolă uitată (folosind adresa de email);
+  - Acceptă plata online folosind PayPal;
+  - Medicamentele pot fi ridicate din magazin folosind un cod unic de comandă sau QR-Code;
+  - Farmaciștii (administratori) pot verifica stocurile existente în stoc;
+  - Să se poată adăuga oferte de preț (pentru o anumită perioadă sau pentru un anume produs);
+  - Optiunea de a adăuga și modifica medicamentele existente;
+  - Să apară avertizare atunci când sunt medicamente mai puține decât o anumită limită;
+  - Opțiunea de a crea rapoarte de vânzare (zi / săptămână / lună / an);
+  - Posibilitatea de a comanda medicate în funcție de nume și/sau specificații;
+  - Emitere de facturi pentru vânzări;
+    
+[IMPORTANT]
+  - Pentru platformă trebuie să facem noi propriul design;
+  - Trebuie să ne împărțim rolurile;
+  - După realizarea modului de conectare / adăugare medicamente, trebuie să adăugăm cât mai multe medicamente;
+      
+[EXTRA]
+  - Am uitat ceva?
+  - Propuneri pentru cine ce va face?
