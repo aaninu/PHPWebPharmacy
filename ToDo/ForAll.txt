@@ -23,6 +23,7 @@ Descriere proiect:
   - Pentru platformă trebuie să facem noi propriul design;
   - Trebuie să ne împărțim rolurile;
   - După realizarea modului de conectare / adăugare medicamente, trebuie să adăugăm cât mai multe medicamente;
+  - Numele ales este: WebPharmacy (Avem nevoie de logo);
       
 [EXTRA]
   - Am uitat ceva?
