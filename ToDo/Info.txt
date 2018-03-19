@@ -28,3 +28,7 @@ Descriere proiect:
 [EXTRA]
   - Am uitat ceva?
   - Propuneri pentru cine ce va face?
+
+[ToDo]
+  - Lista cu medicamente [Beni];
+  - Design [Ioana];
