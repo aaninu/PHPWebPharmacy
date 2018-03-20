@@ -60,6 +60,11 @@
 		return gSESSION("wph_uID");
 	}
 	
+	/** Get local user Type*/
+	function g_uType(){
+		return gSESSION("wph_uType");
+	}
+	
 	/** Connect to database */
 	function db_connect(){
 		$conn = mysqli_connect(s("DB_HOST"), s("DB_USER"), s("DB_PASS"), s("DB_DATB"));
@@ -94,6 +99,12 @@
 			return (int)$dbr[0];
 		}
 	}
+	/** Check if product exist */
+	function db_exist_product($productID){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products')." WHERE id = '$productID';");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
 	
 	/** Get user ID using email and password */
 	function db_gID_account($sEMAIL, $sPAROLA){
@@ -101,11 +112,34 @@
 		return $dbr["id"];
 	}
 	
+	/** Load user information from [login] Page */
+	function db_Load_LoginInformation($sEMAIL, $sPAROLA){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('users')." WHERE s_email = '$sEMAIL' AND sPW_Code = PASSWORD('$sPAROLA');"),MYSQLI_ASSOC);
+		sSESSION("wph_uID", $dbr["id"]);
+		sSESSION("wph_uEmail", $dbr["s_email"]);
+		sSESSION("wph_uName", $dbr["s_nume"]);
+		sSESSION("wph_uPrenume", $dbr["s_prenume"]);
+		sSESSION("wph_uTelefon", $dbr["s_telefon"]);
+		sSESSION("wph_uAdresa", $dbr["s_addresa"]);
+		sSESSION("wph_uType", $dbr["eType"]);
+	}
+	
 	/** Update user login date */
 	function db_update_login($sEMAIL, $sPAROLA){
 		return db_connect()->query("UPDATE ".db_table('users')." SET d_login = '".time()."' WHERE s_email = '$sEMAIL' AND sPW_Code = PASSWORD('$sPAROLA');");
 	}
 	
+	/** Encode / Decode Product ID */
+	function sMyID($idProduct, $sType = "e"){
+		if ($sType == "d"){
+			$secureKey = intval(s('KEY_SCR'));
+			$code = hexdec($idProduct);
+			return intval($code/$secureKey);
+		}else{
+			$secureKey = intval(s('KEY_SCR'));
+			return dechex($idProduct*$secureKey);
+		}
+	}
 	
 	
 	

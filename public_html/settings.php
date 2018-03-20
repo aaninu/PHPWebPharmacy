@@ -16,6 +16,6 @@
 		
 		/** General information */
 		'URL'		=> "http://webpharmacy.aninu.xyz/",
-		
+		'KEY_SCR'	=> "1",	
 	);
 	

@@ -9,13 +9,11 @@
 	/** Enable SESSION */
 	session_start();
 	
-	/** Import file [functionso.php]*/
+	/** Import file [functionso.php] */
 	require('functions.php');
 	
 	/** Check database connection */
 	db_connect();
-	
-	
 	
 	/** [login] Page */
 	if (p(1) == "login"){
@@ -31,7 +29,7 @@
 				if(db_exist_account($wph_email, $wph_password)){
 					$uID = db_gID_account($wph_email, $wph_password);
 					if ($uID){
-						sSESSION("wph_uID", $uID);
+						db_Load_LoginInformation($wph_email, $wph_password);
 						db_update_login($wph_email, $wph_password);
 						$wph_email = "";
 						$wph_password = "";
@@ -94,13 +92,23 @@
 		
 	}
 	
-	
-	
+	/** [product] Page */
+	if (p(1) == "product"){
+		$productID = sMyID(p(2), "d");
+		if (!db_exist_product($productID)) r('products/', 0);
+	}
 	
 	
 	/** Import pages */
 	if (p(1) == "admin"){
-		echo "Admin > f";
+		if (g_uType() == "ADMIN" or g_uType() == "PHARMACY"){
+			if(p(2) == "" or p(2) == "index") 
+				require_once(realpath('./include/admin/')."/index.php");
+			elseif(file_exists(realpath('./include/admin/')."/".p(2).".php")) 
+				require_once(realpath('./include/admin/')."/".p(2).".php");
+			else
+				require_once(realpath('./include/admin/').'/error.php');
+		}else{ r("", 0); }
 	}else{
 		if(p(1) == "" or p(1) == "index") 
 			require_once(realpath('./include/quest/')."/index.php");
