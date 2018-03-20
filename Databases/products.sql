@@ -3,10 +3,25 @@
 -- ------------------------------------
 
 CREATE TABLE `webph_products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `i_user` int(11) NULL,
-  `s_nume` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
-  `d_public` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
-  `d_edit` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int(11) NOT NULL,
+  `i_user` int(11) DEFAULT NULL,
+  `s_nume` varchar(100) DEFAULT NULL,
+  `s_pret` varchar(25) NOT NULL DEFAULT '0',
+  `s_moneda` varchar(25) NOT NULL,
+  `i_cantitate` int(11) NOT NULL DEFAULT '1',
+  `s_descriere` longtext NOT NULL,
+  `s_Tip` longtext NOT NULL,
+  `s_Mod` longtext NOT NULL,
+  `s_imagine` longtext NOT NULL,
+  `d_expirare` varchar(25) NOT NULL,
+  `d_public` varchar(25) DEFAULT NULL,
+  `d_edit` varchar(25) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- Indexes for table `webph_products`
+ALTER TABLE `webph_products`
+  ADD PRIMARY KEY (`id`);
+
+-- AUTO_INCREMENT for table `webph_products`
+ALTER TABLE `webph_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
