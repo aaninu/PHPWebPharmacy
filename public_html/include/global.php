@@ -99,6 +99,31 @@
 	}
 	
 	
+	/** [admin/products-add] Page */
+	if (p(1) == "admin" and p(2) == "products-add"){
+		$wph_msg = "";
+		$wph_s_nume = "";
+		$wph_s_pret = "";
+		$wph_s_moneda = "";
+		$wph_i_cantitate = "";
+		$wph_s_descriere = "";
+		$wph_s_Tip = "";
+		$wph_s_Mod = "";
+		$wph_d_expirare = "";
+		$wph_addproduct = gPOST('wph_addproduct');
+		if ($wph_addproduct == "Adauga medicamentul"){
+			$wph_s_nume = gPOST('wph_s_nume');
+			$wph_s_pret = gPOST('wph_s_pret');
+			$wph_s_moneda = gPOST('wph_s_moneda');
+			$wph_i_cantitate = gPOST('wph_i_cantitate');
+			$wph_s_descriere = gPOST('wph_s_descriere');
+			$wph_s_Tip = gPOST('wph_s_Tip');
+			$wph_s_Mod = gPOST('wph_s_Mod');
+			$wph_d_expirare = gPOST('wph_d_expirare');
+			
+			
+		}
+	}
 	/** Import pages */
 	if (p(1) == "admin"){
 		if (g_uType() == "ADMIN" or g_uType() == "PHARMACY"){
@@ -111,10 +136,10 @@
 		}else{ r("", 0); }
 	}else{
 		if(p(1) == "" or p(1) == "index") 
-			require_once(realpath('./include/quest/')."/index.php");
-		elseif(file_exists(realpath('./include/quest/')."/".p(1).".php")) 
-			require_once(realpath('./include/quest/')."/".p(1).".php");
+			require_once(realpath('./include/guest/')."/index.php");
+		elseif(file_exists(realpath('./include/guest/')."/".p(1).".php")) 
+			require_once(realpath('./include/guest/')."/".p(1).".php");
 		else
-			require_once(realpath('./include/quest/').'/error.php');
+			require_once(realpath('./include/guest/').'/error.php');
 	}
 	

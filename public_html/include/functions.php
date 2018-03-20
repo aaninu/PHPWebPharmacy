@@ -99,6 +99,7 @@
 			return (int)$dbr[0];
 		}
 	}
+	
 	/** Check if product exist */
 	function db_exist_product($productID){
 		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products')." WHERE id = '$productID';");
