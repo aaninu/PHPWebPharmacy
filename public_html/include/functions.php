@@ -48,6 +48,12 @@
 		global $_SESSION;
 		return (isset($_SESSION[$val]))?$_SESSION[$val]:"";
 	}
+	
+	/** Get content from [$_FILES] */
+	function gFILES($val){
+		global $_FILES;
+		return (isset($_FILES[$val]))?$_FILES[$val]:"";
+	}
 
 	/** Set content from [$_SESSION] */
 	function sSESSION($type, $value = ""){
@@ -128,6 +134,11 @@
 	/** Update user login date */
 	function db_update_login($sEMAIL, $sPAROLA){
 		return db_connect()->query("UPDATE ".db_table('users')." SET d_login = '".time()."' WHERE s_email = '$sEMAIL' AND sPW_Code = PASSWORD('$sPAROLA');");
+	}
+	
+	/** Add new product to database */
+	function db_create_product($sNAME, $sPRET, $sMONEDA, $sREDUCERE, $iCANTITATE, $sDESC, $sTIP, $sMOD, $sIMAGE, $dEXP){
+		return db_connect()->query("INSERT INTO ".db_table('products')." SET i_user = '".g_uID()."',s_nume = '$sNAME', s_pret = '$sPRET', s_moneda = '$sMONEDA', s_reducere = '$sREDUCERE', i_cantitate = '$iCANTITATE', s_descriere = '$sDESC', s_Tip = '$sTIP', s_Mod = '$sMOD', s_imagine = '$sIMAGE', d_expirare = '$dEXP', d_public = '".time()."', d_edit = '".time()."';");
 	}
 	
 	/** Encode / Decode Product ID */

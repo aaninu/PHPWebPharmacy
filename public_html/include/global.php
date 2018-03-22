@@ -98,14 +98,14 @@
 		if (!db_exist_product($productID)) r('products/', 0);
 	}
 	
-	
 	/** [admin/products-add] Page */
 	if (p(1) == "admin" and p(2) == "products-add"){
 		$wph_msg = "";
 		$wph_s_nume = "";
 		$wph_s_pret = "";
 		$wph_s_moneda = "";
-		$wph_i_cantitate = "";
+		$wph_i_cantitate = 0;
+		$wph_i_reducere = 0;
 		$wph_s_descriere = "";
 		$wph_s_Tip = "";
 		$wph_s_Mod = "";
@@ -115,15 +115,58 @@
 			$wph_s_nume = gPOST('wph_s_nume');
 			$wph_s_pret = gPOST('wph_s_pret');
 			$wph_s_moneda = gPOST('wph_s_moneda');
-			$wph_i_cantitate = gPOST('wph_i_cantitate');
+			$wph_i_cantitate = intval(gPOST('wph_i_cantitate'));
+			$wph_i_reducere = gPOST('wph_i_reducere');
 			$wph_s_descriere = gPOST('wph_s_descriere');
 			$wph_s_Tip = gPOST('wph_s_Tip');
 			$wph_s_Mod = gPOST('wph_s_Mod');
 			$wph_d_expirare = gPOST('wph_d_expirare');
-			
-			
+			$wph_image = gFILES("wph_image");
+			// Check empty fields
+			if ($wph_s_nume and $wph_s_pret and $wph_s_moneda and $wph_i_cantitate and $wph_s_descriere and $wph_s_Tip and $wph_s_Mod and $wph_d_expirare and $wph_image["name"]){
+				// Check file error
+				if($wph_image["error"] == 0){
+					$target_file = s('FILE_DIR').basename($wph_image["name"]);
+					$imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+					$aux_ext = strtolower($imageFileType);
+					// Check file extension
+					if ($aux_ext == "png" or $aux_ext == "jpg" or $aux_ext == "jpeg" or $aux_ext == "gif"){
+						$im_size = $wph_image["size"];
+						// Check Image size
+						if ($im_size <= s('FILE_SIZE')*1024*1024){
+							// Save image on server with name {USER_ID}_{TIME_NOW}_{md5(FILE_NAME)}.{EXTENSIE}
+							$save_name = g_uID()."_".time()."_".md5(basename($wph_image["name"])).".".$imageFileType;
+							$save_to = s('FILE_DIR').$save_name;
+							$db_save = u(s('FILE_URL').$save_name);
+							// Check [Moneda] {RON/EURO}
+							if ($wph_s_moneda == "RON" or $wph_s_moneda == "EURO"){
+								// Check [Cantitate] {>0}
+								if ($wph_i_cantitate > 0){
+									// Check [Expirare] {>30day}
+									if (strtotime($wph_d_expirare) > time()+s('LIM_TIME')){
+										// Check upload and save on database
+										if (move_uploaded_file($wph_image["tmp_name"], $save_to) and db_create_product($wph_s_nume, $wph_s_pret, $wph_s_moneda, $wph_i_reducere, $wph_i_cantitate, $wph_s_descriere, $wph_s_Tip, $wph_s_Mod, $db_save, strtotime($wph_d_expirare))) {
+											$wph_s_nume = "";
+											$wph_s_pret = "";
+											$wph_s_moneda = "";
+											$wph_i_cantitate = 0;
+											$wph_i_reducere = 0;
+											$wph_s_descriere = "";
+											$wph_s_Tip = "";
+											$wph_s_Mod = "";
+											$wph_d_expirare = "";
+											$wph_msg =  'Medicamentul a fost adaugat cu succes.'; 
+										}else{ $wph_msg = 'S-a produs o eroare. Te rugam sa incerci mai tarziu. '; }
+									}else{ $wph_msg = "Medicamentul trebuie sa fie disponibil pentru cel putin ".(s('LIM_TIME')/60/60/24)." (de) zile"; }
+								}else{ $wph_msg = "Cantitatea trebuie sa fie o valoare pozitiva mai mare ca 0."; }
+							}else{ $wph_msg = "Moneda selectata nu este valida! Monede disponibile: RON, EURO."; }
+						}else{ $wph_msg = "Imaginea selectata depaseste limita impusa! (Maxim ".s('FILE_SIZE')."MB)."; }
+					}else{ $wph_msg = "Fisierul selectat nu respecta extensiile standard (png, jpg, jpeg, gif)."; }
+				}else{ $wph_msg = "Fisierul selectat nu a fost acceptat! Te rugam sa alegi alta imagine.";}
+			}else{ $wph_msg = "Nu ati completat toate spatiile obligatorii.";}
 		}
 	}
+	
 	/** Import pages */
 	if (p(1) == "admin"){
 		if (g_uType() == "ADMIN" or g_uType() == "PHARMACY"){

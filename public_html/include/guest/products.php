@@ -26,7 +26,7 @@ Lista produselor cu paginare
 		<td><?=$info->s_moneda;?></td>
 		<td><?=$info->i_cantitate;?></td>
 		<td><?=$info->s_Tip;?></td>
-		<td><?=$info->s_imagine;?></td>
+		<td><img src="<?=$info->s_imagine;?>" width="150" height="100"></td>
 		<td><?=$info->i_views;?></td>
 	</tr>
 <?PHP

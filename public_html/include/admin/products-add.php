@@ -1,6 +1,8 @@
 Adauga medicament nou 
 <hr>
 
+
+<?=$wph_msg;?>
 <form action="<?=u("admin/products-add/");?>" method="POST" enctype="multipart/form-data">
 	<input type="text" name="wph_s_nume" value="<?=$wph_s_nume;?>" placeholder="Denumire" required> <hr>
 	<input type="text" name="wph_s_pret" value="<?=$wph_s_pret;?>" placeholder="Pret" required>
@@ -11,6 +13,7 @@ Adauga medicament nou
 	</select>
 	<hr>
 	<input type="text" name="wph_i_cantitate" value="<?=$wph_i_cantitate;?>" placeholder="Cantitate" required> <hr>
+	<input type="text" name="wph_i_reducere" value="<?=$wph_i_reducere;?>" placeholder="Reducere (Se foloseste % +-)" required> <hr>
 	<textarea name="wph_s_descriere" placeholder="Descriere" required><?=$wph_s_descriere;?></textarea><hr>
 	<input type="text" name="wph_s_Tip" value="<?=$wph_s_Tip;?>" placeholder="Tipul medicamentului" required> <hr>
 	<textarea name="wph_s_Mod" placeholder="Mod de administrare" required><?=$wph_s_Mod;?></textarea><hr>

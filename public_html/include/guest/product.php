@@ -14,6 +14,7 @@ Informatii despre un anume produs
 		<th>Denumire</th>
 		<th>Pret</th>
 		<th>Moneda</th>
+		<th>Reducere</th>
 		<th>Cantitate</th>
 		<th>Descriere</th>
 		<th>Tip medicament</th>
@@ -33,11 +34,12 @@ Informatii despre un anume produs
 		<td><?=$info->s_nume;?></td>
 		<td><?=$info->s_pret;?></td>
 		<td><?=$info->s_moneda;?></td>
+		<td><?=$info->s_reducere;?></td>
 		<td><?=$info->i_cantitate;?></td>
 		<td><?=$info->s_descriere;?></td>
 		<td><?=$info->s_Tip;?></td>
 		<td><?=$info->s_Mod;?></td>
-		<td><?=$info->s_imagine;?></td>
+		<td><img src="<?=$info->s_imagine;?>" width="150" height="100"></td>
 		<td><?=$info->d_expirare;?></td>
 		<td><?=$info->d_public;?></td>
 		<td><?=$info->d_edit;?></td>
