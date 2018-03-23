@@ -30,5 +30,8 @@ Descriere proiect:
   - Propuneri pentru cine ce va face?
 
 [ToDo]
-  - Lista cu medicamente [Beni];
+  - Lista cu medicamente:
+    > Excel cu 50 de medicamente; [Fix > Beni]
+    > Excel cu 100 de medicamente; [Beni]
+  - Adauga medicamentele in platforma; [Beni]
   - Design [Ioana];
