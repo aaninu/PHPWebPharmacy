@@ -8,7 +8,7 @@ Informații generale:
 Descriere proiect:
   - Căutare medicamente în platformă; [Fix > Aninu]
   - Afișare informații despre medicamentele existente în platformă (preț, caracteristici, tip, mod de administrare, etc); [Fix > Aninu]
-  - Modul de conectare / înregistrare / parolă uitată (folosind adresa de email);
+  - Modul de conectare / înregistrare / parolă uitată (folosind adresa de email); [Fix > Aninu]
   - Acceptă plata online folosind PayPal;
   - Medicamentele pot fi ridicate din magazin folosind un cod unic de comandă sau QR-Code;
   - Farmaciștii (administratori) pot verifica stocurile existente în stoc;
