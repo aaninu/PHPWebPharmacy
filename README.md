@@ -16,6 +16,9 @@ contact@webpharmacy.aninu.xyz
 
 # Contain:
   - Send email via PHPMailer (smtp);
+  - Invoice Code128 and QR Code;
+  - Save invoice to PDF;
+  
  
 
 In progress ...
