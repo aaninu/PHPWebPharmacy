@@ -24,6 +24,7 @@ Informatii despre un anume produs
 		<th>Data publicarii</th>
 		<th>Data ultimei modificari</th>
 		<th>Vizualizari</th>
+		<th>Cumpara</th>
 	</tr>
 	
 <?PHP
@@ -44,6 +45,7 @@ Informatii despre un anume produs
 		<td><?=$info->d_public;?></td>
 		<td><?=$info->d_edit;?></td>
 		<td><?=$info->i_views;?></td>
+		<td><a href="<?=u('cart-add/'.sMyID($info->id).'/');?>">Cumpara</td>
 	</tr>
 <?PHP
 		}

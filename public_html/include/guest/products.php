@@ -11,6 +11,7 @@ Lista produselor cu paginare
 		<th>Tip medicament</th>
 		<th>Imagine</th>
 		<th>Vizualizari</th>
+		<th>Cumpara</th>
 	</tr>
 	
 <?PHP
@@ -28,6 +29,7 @@ Lista produselor cu paginare
 		<td><?=$info->s_Tip;?></td>
 		<td><img src="<?=$info->s_imagine;?>" width="150" height="100"></td>
 		<td><?=$info->i_views;?></td>
+		<td><a href="<?=u('cart-add/'.sMyID($info->id).'/');?>">Cumpara</td>
 	</tr>
 <?PHP
 		}
