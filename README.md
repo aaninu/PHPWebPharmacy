@@ -13,6 +13,7 @@ contact@webpharmacy.aninu.xyz
   - Contact;
   - About;
   - Cart;
+  - Invoice;
 
 # Contain:
   - Send email via PHPMailer (smtp);
