@@ -10,28 +10,27 @@ Descriere proiect:
   - Afișare informații despre medicamentele existente în platformă (preț, caracteristici, tip, mod de administrare, etc); [Fix > Aninu]
   - Modul de conectare / înregistrare / parolă uitată (folosind adresa de email); [Fix > Aninu]
   - Acceptă plata online folosind PayPal;
-  - Medicamentele pot fi ridicate din magazin folosind un cod unic de comandă sau QR-Code;
-  - Farmaciștii (administratori) pot verifica stocurile existente în stoc;
+  - Medicamentele pot fi ridicate din magazin folosind un cod unic de comandă sau QR-Code; [Fix > Aninu]
+  - Farmaciștii (administratori) pot verifica stocurile existente în stoc; [Fix > Aninu]
   - Să se poată adăuga oferte de preț (pentru o anumită perioadă sau pentru un anume produs);
-  - Optiunea de a adăuga și modifica medicamentele existente;
-  - Să apară avertizare atunci când sunt medicamente mai puține decât o anumită limită;
+  - Optiunea de a adăuga și modifica medicamentele existente; [Fix > Aninu]
+  - Să apară avertizare atunci când sunt medicamente mai puține decât o anumită limită; [Fix > Aninu]
   - Opțiunea de a crea rapoarte de vânzare (zi / săptămână / lună / an);
   - Posibilitatea de a comanda medicate în funcție de nume și/sau specificații;
-  - Emitere de facturi pentru vânzări;
+  - Emitere de facturi pentru vânzări; [Fix > Aninu]
     
 [IMPORTANT]
   - Pentru platformă trebuie să facem noi propriul design;
   - Trebuie să ne împărțim rolurile;
   - După realizarea modului de conectare / adăugare medicamente, trebuie să adăugăm cât mai multe medicamente;
   - Numele ales este: WebPharmacy (Avem nevoie de logo);
-      
-[EXTRA]
-  - Am uitat ceva?
-  - Propuneri pentru cine ce va face?
 
 [ToDo]
   - Lista cu medicamente:
     > Excel cu 50 de medicamente; [Fix > Beni]
     > Excel cu 100 de medicamente; [Beni]
-  - Adauga medicamentele in platforma; [Beni]
+  - Adauga medicamentele in platforma:
+    > 50 de medicamente; [Fix > Beni]
+    > 100 de medicamente; [Beni]
   - Design [Ioana];
+  - Testare [All];
