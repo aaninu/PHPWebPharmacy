@@ -32,16 +32,6 @@ Descriere proiect:
   - Adauga medicamentele in platforma:
     > 50 de medicamente; [Fix > Beni]
     > 100 de medicamente; [Beni]
-  - Design (pagini) [Ioana];
-    > Acasa;
-    > Lista de medicamente;
-    > Pagina unui medicament;
-    > Cautare;
-    > Conectare;
-    > Inregistrare;
-    > Ai uitat parola;
-    > Cos de cumparaturi;
-    > Contul meu;
-    > Despre noi;
-    > Contact;
-  - Testare [All];
+  - Desciere; [Ioana]
+  - Pagini; [Aninu]
+  - Testare; [All]
