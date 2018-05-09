@@ -30,13 +30,15 @@ contact@webpharmacy.aninu.xyz
   
   - [x] Admin - Home;
   - [x] Admin - List of medicines;
-  - [ ] Admin - Add new medicines {In progress};
-  - [ ] Admin - Edit medicines information {In progress};
+  - [x] Admin - Add new medicines;
+  - [x] Admin - Edit medicines information;
   - [x] Admin - Orders;
   - [ ] Admin - Edit order information {In progress};
-  - [ ] Admin - Users {In progress};
+  - [x] Admin - Users;
   - [x] Admin - Scan Barcode;
   - [ ] Admin - General Settings {In progress};
+  - [ ] Admin - Orders Report {In progress};
+  - [ ] Admin - Invoices {In progress};
 
 # Contain:
   - [x] Send email via PHPMailer (smtp);
