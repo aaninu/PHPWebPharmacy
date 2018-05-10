@@ -26,14 +26,14 @@ contact@webpharmacy.aninu.xyz
   - [x] User - Change password;
   - [x] User - Logout;
   - [x] User - My orders;
-  - [ ] User - Settings {In progress};
+  - [x] User - Settings;
   
   - [x] Admin - Home;
   - [x] Admin - List of medicines;
   - [x] Admin - Add new medicines;
   - [x] Admin - Edit medicines information;
   - [x] Admin - Orders;
-  - [ ] Admin - Edit order information {In progress};
+  - [x] Admin - Edit order information;
   - [x] Admin - Users;
   - [x] Admin - Scan Barcode;
   - [ ] Admin - General Settings {In progress};
@@ -46,6 +46,7 @@ contact@webpharmacy.aninu.xyz
   - [ ] Save invoice to PDF {In progress};
   - [x] Cron Jobs;
   - [x] Scan Barcode with camera;
+  - [ ] Payment with Paypal;
   
   
 
