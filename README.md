@@ -36,14 +36,15 @@ contact@webpharmacy.aninu.xyz
   - [x] Admin - Edit order information;
   - [x] Admin - Users;
   - [x] Admin - Scan Barcode;
-  - [ ] Admin - General Settings {In progress};
+  - [x] Admin - General Settings;
   - [ ] Admin - Orders Report {In progress};
+  - [ ] Admin - Import medines;
   - [ ] Admin - Invoices {In progress};
 
 # Contain:
   - [x] Send email via PHPMailer (smtp);
   - [x] Invoice Code128 and QR Code;
-  - [ ] Save invoice to PDF {In progress};
+  - [x] Save invoice to PDF;
   - [x] Cron Jobs;
   - [x] Scan Barcode with camera;
   - [ ] Payment with Paypal;
