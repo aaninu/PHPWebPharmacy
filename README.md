@@ -14,7 +14,7 @@ contact@webpharmacy.aninu.xyz
   - [x] Contact;
   - [x] About;
   - [x] Cart;
-  - [ ] Invoice {In progress};
+  - [x] Invoice;
   - [x] Carrers;
   - [x] Discounts;
   - [x] Error;
@@ -39,7 +39,7 @@ contact@webpharmacy.aninu.xyz
   - [x] Admin - General Settings;
   - [ ] Admin - Orders Report {In progress};
   - [ ] Admin - Import medines;
-  - [ ] Admin - Invoices {In progress};
+  - [x] Admin - Invoices;
 
 # Contain:
   - [x] Send email via PHPMailer (smtp);
@@ -47,7 +47,7 @@ contact@webpharmacy.aninu.xyz
   - [x] Save invoice to PDF;
   - [x] Cron Jobs;
   - [x] Scan Barcode with camera;
-  - [ ] Payment with Paypal;
+  - [x] Payment with Paypal;
   
   
 
