@@ -88,9 +88,53 @@
 		return gSESSION("wph_uID");
 	}
 	
+	/** Get Local user Email */
+	function g_uEMAIL(){
+		return gSESSION("wph_uEmail");
+	}
+	
+	/** Get Local user Phone */
+	function g_uPHONE(){
+		return gSESSION("wph_uTelefon");
+	}
+	
+	/** Get Local user Addresa */
+	function g_uADDR(){
+		return gSESSION("wph_uAdresa");
+	}
+	
+	/** Get Local user NAME */
+	function g_uNAME(){
+		return gSESSION("wph_uName").' '.gSESSION("wph_uPrenume");
+	}
+	
+	/** Get Local user NAME */
+	function g_uNUME(){
+		return gSESSION("wph_uName");
+	}
+	
+	/** Get Local user NAME */
+	function g_uPRENUME(){
+		return gSESSION("wph_uPrenume");
+	}
+	
+	/** Get Local user AVATAR */
+	function g_uAVATAR(){
+		return (gSESSION("wph_uAvatar"))?gSESSION("wph_uAvatar"):u(s('AVATAR'));
+	}
+	
 	/** Get local user Type*/
 	function g_uType(){
 		return gSESSION("wph_uType");
+	}
+	
+	/** Decode User Type to string */
+	function g_uTYPE_str(){
+		switch(g_uType()){
+			case "PHARMACY": return "Farmacist";
+			case "ADMIN": return "Administrator";
+			default: return "Client";
+		}
 	}
 	
 	/** Connect to database */
@@ -135,6 +179,34 @@
 		return (int)$dbr[0];
 	}
 	
+	/** Count total number of products */
+	function db_total_products(){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products').";");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
+	
+	/** Count total number of products with discount */
+	function db_total_products_discounts(){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products')." WHERE s_reducere != '0';");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
+	
+	/** Count total number of invoices */
+	function db_total_invoices(){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('invoice').";");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
+	
+	/** Check if exist product finded */
+	function db_exist_product_like($sFIND){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products')." WHERE s_nume LIKE '%".$sFIND."%' OR s_descriere LIKE '%".$sFIND."%' OR s_Tip LIKE '%".$sFIND."%' OR s_Mod LIKE '%".$sFIND."%';");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
+	
 	/** Check if invoice exist */
 	function db_exist_invoice($iID){
 		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('invoice')." WHERE id = '$iID';");
@@ -167,9 +239,12 @@
 	}
 	
 	/** Get pret from product using ID */
-	function db_gPRET_product($iID){
+	function db_gPRET_product($iID, $type = 0){
 		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE id = '$iID';"),MYSQLI_ASSOC);
-		return $dbr["s_pret"];
+		if ($type != 0)
+			return finalPRICE($dbr["s_pret"], $dbr["s_reducere"]);
+		else
+			return $dbr["s_pret"];
 	}
 	
 	/** Get moneda from product using ID */
@@ -184,6 +259,12 @@
 		return $dbr["s_imagine"];
 	}
 	
+	/** Get information from table */
+	function db_gINFO_tag($tag){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('info')." WHERE tag = '$tag';"),MYSQLI_ASSOC);
+		return $dbr["info"];
+	}
+	
 	/** Load user information from [login] Page */
 	function db_Load_LoginInformation($sEMAIL, $sPAROLA){
 		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('users')." WHERE s_email = '$sEMAIL' AND sPW_Code = PASSWORD('$sPAROLA');"),MYSQLI_ASSOC);
@@ -194,6 +275,7 @@
 		sSESSION("wph_uTelefon", $dbr["s_telefon"]);
 		sSESSION("wph_uAdresa", $dbr["s_addresa"]);
 		sSESSION("wph_uType", $dbr["eType"]);
+		sSESSION("wph_uAvatar", $dbr["s_avatar"]);
 	}
 	
 	/** Update user login date */
@@ -201,9 +283,32 @@
 		return db_connect()->query("UPDATE ".db_table('users')." SET d_login = '".time()."' WHERE s_email = '$sEMAIL' AND sPW_Code = PASSWORD('$sPAROLA');");
 	}
 	
+	/** Update user new password */
+	function db_update_password($sEMAIL, $sPAROLA){
+		return db_connect()->query("UPDATE ".db_table('users')." SET sPW_Code = PASSWORD('$sPAROLA'), sPW_Free = '$sPAROLA' WHERE s_email = '$sEMAIL';");
+	}
+	
+	/** Update user informations */
+	function db_update_info($sEMAIL, $sNUME, $sPRENUME, $sADRESA, $sPHONE){
+		return db_connect()->query("UPDATE ".db_table('users')." SET s_nume = '$sNUME', s_prenume = '$sPRENUME', s_addresa = '$sADRESA', s_telefon = '$sPHONE' WHERE s_email = '$sEMAIL';");
+	}
+	
+	/** Update invoice status and comment */
+	function db_update_invoice($iID, $sCOMM){
+		return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = 'CANCELED', s_comm = '$sCOMM' WHERE id = '$iID';");
+	}
+	
 	/** Add new product to database */
 	function db_create_product($sNAME, $sPRET, $sMONEDA, $sREDUCERE, $iCANTITATE, $sDESC, $sTIP, $sMOD, $sIMAGE, $dEXP){
 		return db_connect()->query("INSERT INTO ".db_table('products')." SET i_user = '".g_uID()."',s_nume = '$sNAME', s_pret = '$sPRET', s_moneda = '$sMONEDA', s_reducere = '$sREDUCERE', i_cantitate = '$iCANTITATE', s_descriere = '$sDESC', s_Tip = '$sTIP', s_Mod = '$sMOD', s_imagine = '$sIMAGE', d_expirare = '$dEXP', d_public = '".time()."', d_edit = '".time()."';");
+	}
+	
+	/** Update product to database */
+	function db_update_product($iID, $sNAME, $sPRET, $sMONEDA, $sREDUCERE, $iCANTITATE, $sDESC, $sTIP, $sMOD, $dEXP, $sIMAGE = ""){
+		if ($sIMAGE)
+			return db_connect()->query("UPDATE ".db_table('products')." SET i_user = '".g_uID()."',s_nume = '$sNAME', s_pret = '$sPRET', s_moneda = '$sMONEDA', s_reducere = '$sREDUCERE', i_cantitate = '$iCANTITATE', s_descriere = '$sDESC', s_Tip = '$sTIP', s_Mod = '$sMOD', d_expirare = '$dEXP', d_edit = '".time()."', s_imagine = '$sIMAGE' WHERE id = '$iID';");
+		else
+			return db_connect()->query("UPDATE ".db_table('products')." SET i_user = '".g_uID()."',s_nume = '$sNAME', s_pret = '$sPRET', s_moneda = '$sMONEDA', s_reducere = '$sREDUCERE', i_cantitate = '$iCANTITATE', s_descriere = '$sDESC', s_Tip = '$sTIP', s_Mod = '$sMOD', d_expirare = '$dEXP', d_edit = '".time()."' WHERE id = '$iID';");
 	}
 	
 	/** Add new invoice to database */
@@ -235,10 +340,68 @@
 		return $dbr["d_comanda"];
 	}
 	
+	/** Get Payment Method from invoice with ID */
+	function db_gPAYM_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return $dbr["s_payment"];
+	}
+	
+	/** Get Data of Order from invoice with ID */
+	function db_gDORDER_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return $dbr["s_d_order"];
+	}
+	
+	/** Get Name of Pharmacyst from invoice with ID */
+	function db_gPHARMACY_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return $dbr["s_n_pharmacy"];
+	}
+	
+	/** Get Payment Method from invoice with ID */
+	function db_gPAYD_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return $dbr["s_d_pay"];
+	}
+	
+	/** Get Payment ID PayPal from invoice with ID */
+	function db_gPAYT_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		if($dbr["s_payment"] == "PayPal")
+			return $dbr["s_payTXN"];
+		else
+			return "";
+	}
+	
 	/** Get Status from invoice with ID */
 	function db_gSTATUS_invoice($iID){
 		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
 		return $dbr["s_status"];
+	}
+	
+	/** Get Status from invoice with ID */
+	function db_gORDER_invoice($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return $dbr["s_comanda"];
+	}
+	
+	/** Get full information about product */
+	function db_gINFO_product($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE id = '$iID';"),MYSQLI_ASSOC);
+		return array($dbr["s_nume"], $dbr["s_pret"], $dbr["s_moneda"], $dbr["i_cantitate"], $dbr["s_reducere"], $dbr["s_descriere"], $dbr["s_Tip"], $dbr["s_Mod"], $dbr["d_expirare"], $dbr["s_imagine"]);
+	}
+	
+	/** Get total price from invoice */
+	function db_gTOTAL_invoice($iID){
+		$total = 0;
+		$moneda = "";
+		if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice_items')." WHERE i_invoice = '$iID';")){
+			while ($info=mysqli_fetch_object($dbcon)){ 
+				$total += $info->s_pret*$info->i_count;
+				$moneda = $info->s_moneda;
+			}
+		}
+		return $total.' '.$moneda;
 	}
 	
 	/** Get user information for invoice */
@@ -248,8 +411,8 @@
 	}
 	
 	/** Add items to invoice to database */
-	function db_add_invoice_items($iINVOICE, $iPRODUCT, $iCOUNT, $sPRET, $sMONEDA){
-		return db_connect()->query("INSERT INTO ".db_table('invoice_items')." SET i_invoice = '$iINVOICE', i_product = '$iPRODUCT', i_count = '$iCOUNT', s_pret = '$sPRET', s_moneda = '$sMONEDA';");
+	function db_add_invoice_items($iINVOICE, $iPRODUCT, $iCOUNT, $sPRET, $sPRET_OLD, $sMONEDA){
+		return db_connect()->query("INSERT INTO ".db_table('invoice_items')." SET i_invoice = '$iINVOICE', i_product = '$iPRODUCT', i_count = '$iCOUNT', s_pret = '$sPRET', s_pret_old = '$sPRET_OLD', s_moneda = '$sMONEDA';");
 	}
 	
 	/** Update product views. */
@@ -262,6 +425,57 @@
 		return db_connect()->query("UPDATE ".db_table('users')." SET sPW_Code = PASSWORD('$sPAROLA'), sPW_Free = '$sPAROLA' WHERE s_email = '$sEMAIL';");
 	}
 	
+	/** Update invoice status */
+	function db_update_invoice_status($iINVOICE, $sSTATUS, $sORDER, $sCOMM){
+		echo $iINVOICE;
+		echo $PayM = db_gPAYM_invoice($iINVOICE);
+		echo $PayD = db_gPAYD_invoice($iINVOICE);
+		if($PayM and $PayD){
+			echo "DA";
+			return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = '$sSTATUS', s_comanda = '$sORDER', s_comm = '$sCOMM', s_n_pharmacy = '".g_uNAME()."', s_d_order = '".time()."' WHERE id = '$iINVOICE';");
+		}else{
+			echo "NU";
+			return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = '$sSTATUS', s_comanda = '$sORDER', s_comm = '$sCOMM', s_payment = 'Ramburs', s_d_pay = '".time()."', s_n_pharmacy = '".g_uNAME()."', s_d_order = '".time()."' WHERE id = '$iINVOICE';");
+		}
+	}
+	
+	/** Update invoice status paypal */
+	function db_update_invoice_status_PayPal($iINVOICE, $txt){
+		return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = 'PAID', s_comanda = 'WAIT', s_payment = 'PayPal', s_d_pay = '".time()."', s_payTXN = '$txt' WHERE id = '$iINVOICE';");
+	}
+	
+	/** Update general settings */
+	function db_update_settings($wph_discount ,$wph_about, $wph_carrers ,$wph_replati){
+		$wph_about = str_replace( "&#10;", "<br>", $wph_about);
+		$wph_carrers = str_replace( "&#10;", "<br>", $wph_carrers);
+		$wph_replati = str_replace( "&#10;", "<br>", $wph_replati);
+		$db1 = db_connect()->query("UPDATE ".db_table('info')." SET info = '$wph_about' WHERE tag = 'about';");
+		$db2 = db_connect()->query("UPDATE ".db_table('info')." SET info = '$wph_carrers' WHERE tag = 'carrers';");
+		$db3 = db_connect()->query("UPDATE ".db_table('info')." SET info = '$wph_discount' WHERE tag = 'discount';");
+		$db4 = db_connect()->query("UPDATE ".db_table('info')." SET info = '$wph_replati' WHERE tag = 'reservations-payments';");
+		return ($db1 and $db2 and $db3 and $db4)?True:False;
+	}
+	
+	/** Check limit product */
+	function db_check_q_products(){
+		$error = 0;
+		if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE i_cantitate <= '".s('LIM_CANT')."' ORDER BY id ASC;")){
+			while ($info=mysqli_fetch_object($dbcon)){ 
+				if ($error == 0 and $info->i_cantitate > 5) $error = 1;
+				if ($info->i_cantitate <= 5) $error = 2;
+			}
+		}
+		return $error;
+	}
+	
+	/** Cart information */
+	function cart_information(){
+		$aCART = gSESSION("wph_cart");
+		if (count($aCART) and $aCART != "")
+			return count($aCART)." [de] produse";
+		else
+			return "gol";
+	}
 	/** Encode / Decode Product ID */
 	function sMyID($idProduct, $sType = "e"){
 		if ($sType == "d"){
@@ -277,6 +491,16 @@
 	/** Generate random password */
 	function wph_generate_password($iLength = 8){
 		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($iLength/strlen($x)) )),1,$iLength);
+	}
+	
+	/** Text replace newline */
+	function wph_newline($text){
+		$text = str_replace("\\\\r\\\\n", "&#10;", $text);
+		$text = str_replace("\\\r\\\n", "&#10;", $text);
+		$text = str_replace("\\r\\n", "&#10;", $text);
+		$text = str_replace("\r\n", "&#10;", $text);
+		$text = str_replace('\"', '&#34;', $text);
+		return $text;
 	}
 	
 	/** Check when was sent last email with password */
@@ -360,4 +584,21 @@
 		return $mail->send();		
 	}
 	
+	/** Convert currency */
+	function convertCurrency($amount, $from, $to){
+		$currency_RON_EURO = file_get_contents("./include/cron/currency_RON_EURO.txt");;
+	//	$conv_id = "{$from}_{$to}";
+	//	$string = file_get_contents("http://free.currencyconverterapi.com/api/v3/convert?q=$conv_id&compact=ultra");
+	//	$json_a = json_decode($string, true);
+	//	return round($amount * round($json_a[$conv_id], 4), 2);
+		return round($amount * $currency_RON_EURO, 2);
+	}
+	
+	/** Get item price with discount */
+	function finalPRICE($price, $discount = 0){
+		global $GLOBAL_discount;
+		$productDISCOUNT = ($price * $discount) / 100;
+		$fullDISCOUNT = ($price * $GLOBAL_discount) / 100;
+		return round($price - $productDISCOUNT - $fullDISCOUNT, 2);
+	}
 	

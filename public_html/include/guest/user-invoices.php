@@ -32,19 +32,7 @@
 				<div class="left_contents">
 					<div class="accord">
 						<div class="block">
-							<div class="heading">Informatii generale</div>
-							<div class="biodata-text-more block_display">
-								<table id="cart_table">
-									<tr><td>Nume si prenume</td><td><?=g_uNAME();?></td></tr>
-									<tr><td>Adresa de email</td><td><?=g_uEMAIL();?></td></tr>
-									<tr><td>Numar de telefon</td><td><?=g_uPHONE();?></td></tr>
-									<tr><td>Adresa</td><td><?=g_uADDR();?></td></tr>
-									<tr><td>Tipul contului</td><td><?=g_uTYPE_str();?></td></tr>
-								</table>
-							</div>
-						</div>
-						<div class="block">
-							<div class="heading">Ultimele 5 comenzi</div>
+							<div class="heading">Comenzile mele</div>
 							<div class="biodata-text-more block_display">
 								<table id="cart_table">
 									<tr>
@@ -55,7 +43,7 @@
 									</tr>
 									
 								<?PHP
-									if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE i_user = '".g_uID()."' ORDER BY id DESC LIMIT 5;")){
+									if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice')." WHERE i_user = '".g_uID()."' ORDER BY id DESC;")){
 										while ($info=mysqli_fetch_object($dbcon)){ 
 								?>
 									<tr>

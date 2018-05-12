@@ -15,21 +15,32 @@
 		'DB_TAGS'	=> "webph_",
 		
 		/** General information */
-		'URL'		=> "http://webpharmacy.aninu.xyz/",
+		//'URL'		=> "http://webpharmacy.aninu.xyz/",
+		'URL'		=> "https://aninu.xyz/projects/webpharmacy/",
 		'LOGO'		=> "public/images/Logo_V1.png",
+		'ICON'		=> "public/images/Icon_V1.ico",
 		'NAME'		=> "Web Pharmacy",
 		'MOTTO'		=> "Impreuna pentru o viata mai buna.",
 		'ADRESA'	=> "",
 		'PHONE'		=> "",
+		'COPPY'		=> "",
 		
 		'KEY_SCR'	=> "1",	
 		'INVOICE'	=> "000",	
 		'TVA'		=> "19",	
 		
+		'INVOICE_LIMIT'	=> "604800", // 60x60x24x7 >> 7 zile
+		
 		'FILE_DIR'	=> "./public/att/",	
 		'FILE_SIZE'	=> "5",
 		'FILE_URL'	=> "public/att/",
 		
+		'AVATAR'	=> "public/att/wph_avatar.png",
+		
+		/* Limita minima de medicamente din stoc */
+		'LIM_CANT'	=> "15",
+		
+		/* Timil minim de valabilitate pentru un medicament. */
 		'LIM_TIME'	=> "2592000",		// 60x60x24x30 >> Minim 30 de zile
 		
 		// Email settings 
@@ -37,8 +48,8 @@
 
 		'TIME_ZONE' 	=> 	"Europe/Bucharest",
 		
-		'SMTP_HOST' 	=> 	"mx1.hostinger.ro",
-		'SMTP_PORT' 	=> 	"587",
+		'SMTP_HOST' 	=> 	"",
+		'SMTP_PORT' 	=> 	"",
 		'SMTP_USER' 	=> 	"",
 		'SMTP_PASS' 	=> 	"",
 		// Send By
@@ -52,6 +63,13 @@
 		
 		// Developer Mode
 		'DEV_MODE'		=> 'True',
+		
+		// Invoice to PDF >> https://www.convertapi.com/a
+		'PDF_KEY'		=> '',
+		
+		// PayPal Settings
+		//'PAYPAL_EMAIL'	=> '',
+		'PAYPAL_EMAIL'	=> '',
 		
 	);
 	

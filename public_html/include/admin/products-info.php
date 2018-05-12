@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Medicamente | <?=s('NAME');?></title>
+		<title>Medicamente | Admin | <?=s('NAME');?></title>
 		<?PHP include('./include/guest/multiple/head.php'); ?>
+		<link href="<?=u('public/toast/css/jquery.toast.css');?>" rel="stylesheet">
+		<script>
+			var t_title = "<?=$msgTitle;?>";
+			var t_text = "<?=$msgError;?>";
+			var t_icon = "<?=$msgIcon;?>";
+		</script>
 	</head>
 	<body>
 		<div id="main-container"> 
@@ -15,8 +21,8 @@
 				<div class="breadcrumbs">
 					<ul>
 						<li><a href="<?=u();?>"><img width="14" height="13" alt="" src="<?=u('public/home/');?>images/home_icon.png" /></a></li>
-						<li><a href="<?=u('products/');?>">Lista cu medicamente</a></li>
-						<li class="last-child"><a href="<?=u('product/'.p(2).'/');?>"><?=$info->s_nume;?></a></li>
+						<li><a href="<?=u('admin/products/');?>">Lista cu medicamente</a></li>
+						<li class="last-child"><a href="<?=u('admin/product-info/'.p(3).'/');?>"><?=$info->s_nume;?></a></li>
 					</ul>
 				</div>
 			</div>			
@@ -36,11 +42,7 @@
 					<p><b>Mod de administrare:</b> <?=$info->s_Mod;?></p>
 				</div>
 				<div class="collright">
-					<?PHP $newPRET = finalPRICE($info->s_pret, $info->s_reducere); $pret = round($info->s_pret,2); if ($newPRET != $pret){ ?>
-					<h3> Pret: <del style="color: red;"><?=$pret;?> <?=$info->s_moneda;?></del> <b><?=$newPRET;?> <?=$info->s_moneda;?><b> - <a href="<?=u('cart-add/'.sMyID($info->id).'/');?>">Cumpara</a> </h3>
-					<?PHP }else{ ?>
-					<h3> Pret: <?=$info->s_pret;?> <?=$info->s_moneda;?> - <a href="<?=u('cart-add/'.sMyID($info->id).'/');?>">Cumpara</a> </h3>
-					<?PHP } ?>
+					<h3> Pret: <?=$info->s_pret;?> <?=$info->s_moneda;?> - <a href="<?=u('admin/products-edit/'.sMyID($info->id).'/');?>">Modifica</a> </h3>
 					<p> 
 						<b>Disponibil in stoc:</b> <?=$info->i_cantitate;?> <br>
 						<b>Data publicarii:</b> <?=date("d.m.Y", $info->d_public);?> <br>
@@ -57,5 +59,7 @@
 			<br><br>
 			<?PHP include('./include/guest/multiple/footer.php'); ?>
 		</div>
+		<script src="<?=u('public/toast/js/jquery.toast.js');?>"></script>
+		<script src="<?=u('public/toast/js/toast.js');?>"></script>
 	</body>
 </html>

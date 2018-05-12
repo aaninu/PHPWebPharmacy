@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Prima pagina | <?=s('NAME');?></title>
+		<title>Reduceri | <?=s('NAME');?></title>
 		<?PHP include('./include/guest/multiple/head.php'); ?>
 	</head>
 	<body>
@@ -11,37 +11,14 @@
 				<div class="breadcrumbs">
 					<ul>
 						<li><a href="<?=u();?>"><img width="14" height="13" alt="" src="<?=u('public/home/');?>images/home_icon.png" /></a></li>
-						<li class="last-child"><a href="<?=u('');?>">Acasa</a></li>
+						<li class="last-child"><a href="<?=u('discounts/');?>">Reduceri</a></li>
 					</ul>
 				</div>
-			</div>
-			<div id="advsearch" class="container relative">
-				<div id="letwelcareknow">Cautare avansata</div>
-				<form action="<?=u('find/');?>" method="POST">
-					<div id="iam">
-						 <input type="search" id="find_general" name="wph_search_value" value="<?=$wph_search_value;?>" placeholder="Ce doriti sa cautati?">
-					</div>
-					<div id="helpme"> <span>Sotare</span>
-						<select name="wph_search_sortare" placeholder="Sortare" title="Sortare" id="select-helpme">
-							<option value="0">Sortare dupa ...</option>
-							<option value="DATE_ASC" <?=(p(2)=="DATE_ASC")?"selected":"";?>>Sorteaza dupa data publicarii (ascendent)</option>
-							<option value="DATE_DESC" <?=(p(2)=="DATE_DESC")?"selected":"";?>>Sorteaza dupa data publicarii (descendent)</option>
-							<option value="PRET_ASC" <?=(p(2)=="PRET_ASC")?"selected":"";?>>Sorteaza dupa pret (ascendent)</option>
-							<option value="PRET_DESC" <?=(p(2)=="PRET_DESC")?"selected":"";?>>Sorteaza dupa pret (descendent)</option>
-							<option value="VIEW_ASC" <?=(p(2)=="VIEW_ASC")?"selected":"";?>>Sorteaza dupa vizualizari (ascendent)</option>
-							<option value="VIEW_DESC" <?=(p(2)=="VIEW_DESC")?"selected":"";?>>Sorteaza dupa vizualizari (descendent)</option>
-						</select>
-					</div>
-					<span class="go">
-					<input class="submit" type="submit" value="Cautare" name="wph_search" />
-					</span>
-				</form>
-				<div class="clear"></div>
 			</div>
 			<div id="page-full">
 				<div class="quick_links_div">
 					<div class="whide_btn_div">	
-						<span><a href="<?=u('products/');?>">Cele mai cautate medicamente</a></span>
+						<span><a href="<?=u('discounts/');?>">Medicamente la reducere</a></span>
 					</div>
 					<div class="gallery-filter-icons">
 						<div class="changelayout">
@@ -54,7 +31,7 @@
 					<ul class="gallery">
 <?PHP
 	$pos = 0;
-	if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." ORDER BY i_views DESC LIMIT 8;")){
+	if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE s_reducere != '0' ORDER BY id ASC LIMIT $startWith,$itemPage;")){
 		while ($info=mysqli_fetch_object($dbcon)){ 
 			$pos++;
 ?>
@@ -89,7 +66,14 @@
 ?>
 					</ul>
 				</div>
-			</div>		
+				<div class="pagination no_margin_bottom">
+					<a href="<?=u('discounts/');?>" class="">Prima</a>
+<?PHP $page = 1; $pageI = 0; while($pageI < $totalProd){ ?>
+					<a href="<?=u('discounts/'.sMyID($page).'/');?>" class="<?=($pageNum==$page)?"current":"";?>"><?=$page;?></a>
+<?PHP $pageI += $itemPage; $page++; } ?>
+					<a href="<?=u('discounts/'.sMyID($lastPage).'/');?>" class="">Ultima</a>
+				</div>
+			</div>
 			<br><br>
 			<?PHP include('./include/guest/multiple/footer.php'); ?>
 		</div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Adauga un medicament | Admin | <?=s('NAME');?></title>
+		<title>Modifica informatiile medicamentului | Admin | <?=s('NAME');?></title>
 		<?PHP include('./include/guest/multiple/head.php'); ?>
 		<link href="<?=u('public/toast/css/jquery.toast.css');?>" rel="stylesheet">
 		<script>
@@ -18,7 +18,8 @@
 					<ul>
 						<li><a href="<?=u();?>"><img width="14" height="13" alt="" src="<?=u('public/home/');?>images/home_icon.png" /></a></li>
 						<li><a href="<?=u('admin/');?>">Administrare</a></li>
-						<li class="last-child"><a href="<?=u('admin/products-add/');?>">Adauga un medicament</a></li>
+						<li><a href="<?=u('admin/products/');?>">Lista cu medicamente</a></li>
+						<li class="last-child">Modifica informatiile medicamentului</li>
 					</ul>
 				</div>
 			</div>
@@ -34,12 +35,12 @@
 				<div class="left_contents">
 					<div class="accord">
 						<div class="block">
-							<div class="heading" style="background: #66b44d;">Admin - Adauga un medicament</div>
+							<div class="heading" style="background: #66b44d;">Admin - Modifica informatiile medicamentului</div>
 							<div class="biodata-text-more block_display">
-								<form action="<?=u("admin/products-add/");?>" method="POST" enctype="multipart/form-data">
+								<form action="<?=u("admin/products-edit/".p(3)."/");?>" method="POST" enctype="multipart/form-data">
 									<table id='cart_table_admin'>
 										<tr>
-											<td>Denumire:</td>
+											<td width="150">Denumire:</td>
 											<td>
 												<input type="text" name="wph_s_nume" value="<?=$wph_s_nume;?>" placeholder="Denumire" style="margin-bottom:  0px;width: 97%;" required> 
 											</td>
@@ -65,7 +66,7 @@
 											<td>
 												<input type="text" name="wph_i_cantitate" value="<?=$wph_i_cantitate;?>" placeholder="Cantitate" style="margin-bottom:  0px;width: 97%;" required> 
 											</td>
-										</tr>
+										</tr>									
 										<tr>
 											<td>Redurece (%):</td>
 											<td>
@@ -97,15 +98,19 @@
 											</td>
 										</tr>
 										<tr>
-											<td>Imagine specifica:</td>
 											<td>
-												<input type="file" name="wph_image" id="wph_image" required>
+												Imagine specifica:<br>
+												<font color="red"><b>In cazul in care doriti sa pastrati imaginea, nu selectati alt fisier!</b></font>
+											</td>
+											<td>
+												<img src="<?=$productINFO[9];?>" height="200" width="auto"><br>
+												<input type="file" name="wph_image" id="wph_image">
 											</td>
 										</tr>
 										<tr>	
 											<td colspan="2">
 												<center>
-													<input class="button" style="background-color: #66b44d;" name="wph_addproduct" type="submit" value="Adauga produsul">
+													<input class="button" style="background-color: #66b44d;" name="wph_editproduct" type="submit" value="Salveaza modificarile">
 												</center>
 											</td>
 										</tr>
