@@ -20,10 +20,10 @@
 		'LOGO'		=> "public/images/Logo_V1.png",
 		'ICON'		=> "public/images/Icon_V1.ico",
 		'NAME'		=> "Web Pharmacy",
-		'MOTTO'		=> "Impreuna pentru o viata mai buna.",
+		'MOTTO'		=> "",
 		'ADRESA'	=> "",
 		'PHONE'		=> "",
-		'COPPY'		=> "",
+		'COPPY'		=> "2018",
 		
 		'KEY_SCR'	=> "1",	
 		'INVOICE'	=> "000",	

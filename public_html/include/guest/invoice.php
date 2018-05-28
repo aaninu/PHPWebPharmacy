@@ -36,7 +36,7 @@
 					<?PHP if($sORDER and $sPHARM){ ?><div class="date">Ridicare: Farm. <?=$sPHARM;?> / <?=date("d-m-Y (H:i)", $sORDER);?></div><?PHP } ?>
 				</div>
 			</div>
-			<table border="0" cellspacing="0" cellpadding="0">
+			<table id="invoice_table" border="0" cellspacing="0" cellpadding="0">
 				<thead>
 					<tr>
 						<th class="no">#</th>
@@ -130,7 +130,7 @@
 				<?PHP } ?>
 			</div>
 			<hr>
-			<table>
+			<table id="invoice_table">
 				<tr>
 					<td style="text-align:center;padding:5px;width: 260px;">
 					<?PHP

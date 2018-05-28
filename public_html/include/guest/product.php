@@ -31,9 +31,9 @@
 				<div class="collleft">
 					<div class="image"> <img src="<?=$info->s_imagine;?>" alt="" class="left" width="250" height="250" /> </div>
 					<h3><?=$info->s_nume;?></h3>
-					<p><b>Descriere medicament:</b> <?=$info->s_descriere;?></p>
-					<p><b>Tipul medicamentului:</b> <?=$info->s_Tip;?></p>
-					<p><b>Mod de administrare:</b> <?=$info->s_Mod;?></p>
+					<p><b>Descriere medicament:</b> <?=nl2br($info->s_descriere);?></p>
+					<p><b>Tipul medicamentului:</b> <?=nl2br($info->s_Tip);?></p>
+					<p><b>Mod de administrare:</b> <?=nl2br($info->s_Mod);?></p>
 				</div>
 				<div class="collright">
 					<?PHP $newPRET = finalPRICE($info->s_pret, $info->s_reducere); $pret = round($info->s_pret,2); if ($newPRET != $pret){ ?>

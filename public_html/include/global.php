@@ -256,6 +256,7 @@
 				}else{
 					$name_pp = $first_name." ".$last_name;
 					db_update_invoice_status_PayPal($invID, $txn_id);
+					update_invoice_products($invID);
 					$types = "green";
 					$message_1 = "Plata acceptata";
 					$message_2 = "Factura a fost platita cu succes. Va rugam sa va prezentati in magazinul nostru pentru ridicarea produselor.";
@@ -265,6 +266,23 @@
 		}else{
 			r('not-for-you/', 0);
 		}
+	}
+	
+	/** [reports] Page */
+	if (p(1) == "reports"){
+		$limit_start = intval(p(2));
+		$limit_stop = intval(p(3));
+		if ($limit_start and $limit_stop){
+			$limit = time();
+			$limit_day = 24*60*60;
+			$limit_time = $limit + $limit_day;
+			if (($limit_stop < $limit_time) and ($limit_start < $limit) and ($limit_stop > $limit_start)){
+				require __DIR__.'/code/Code128.php';
+				
+				
+			}else{ r('admin/reports/', 0); }
+		}else{ r('admin/reports/', 0); }
+		
 	}
 	
 	/** [pdf] Page */
@@ -670,6 +688,7 @@
 				if ($wph_s_comanda == 1) $wph_s_comanda = "OK";
 				else $wph_s_comanda = "WAIT";
 				if (db_update_invoice_status($invID, $wph_s_status, $wph_s_comanda, $wph_info)){
+					update_invoice_products($invID);
 					$msgIcon = "success";
 					$msgError = 'Factura curenta a fost actualizata cu succes.'; 					
 				}else{
@@ -755,6 +774,119 @@
 			}else{
 				$msgIcon = "error";
 				$msgError = "Nu ati completat toate spatiile obligatorii.";
+			}
+		}
+	}
+	
+	/** [admin/reports] Page */
+	if (p(1) == "admin" and p(2) == "reports"){
+		$wph_d_start = "";
+		$wph_d_stop = "";
+		$wph_get = gPOST('wph_get');
+		if ($wph_get == "Genereaza raport"){
+			$msgTitle = "Rapoarte de vanzari";
+			$wph_d_start = gPOST('wph_d_start');
+			$wph_d_stop = gPOST('wph_d_stop');
+			if($wph_d_start and $wph_d_stop){
+				$limit = time();
+				$limit_time = $limit + 24*60*60;
+				$limit_stop = strtotime($wph_d_stop);
+				$limit_start = strtotime($wph_d_start);
+				if ($limit_stop < $limit_time){
+					if ($limit_start < $limit){
+						if ($limit_stop > $limit_start){
+							r('reports/'.$limit_start.'/'.$limit_stop.'/', 0);
+						}else{
+							$msgIcon = "warning";
+							$msgError = "Data de start trebuie sa fie mai mare decat cea de stop.";
+						}
+					}else{
+						$msgIcon = "warning";
+						$msgError = "Nu putem crea raport pentru data selectata (Start Date).";
+					}
+				}else{
+					$msgIcon = "warning";
+					$msgError = "Nu putem crea raport pentru data selectata (Stop Date).";
+				}
+			}else{ 
+				$msgIcon = "error";
+				$msgError = "Nu ati completat toate spatiile obligatorii.";
+			}
+		}
+	}
+	
+	/** [admin/imports] Page */
+	if (p(1) == "admin" and p(2) == "imports"){
+        if (p(3) == "s"){
+            $msgTitle = "Incarca medicamentel";
+            $msgIcon = "success";
+            $msgError =  'Medicamentele au fost adaugate cu succes in platforma.'; 
+        }
+		$msg_info = "";
+		$wph_get = gPOST('wph_get');
+		if ($wph_get == "Incarca medicamentele"){
+			$msgTitle = "Incarca medicamentel";
+			$wph_upload = gFILES("upload");
+			$check = upload_check_extension($wph_upload);
+			if($check[0] == True){
+				$xmlNo = upload_check_multiple_xml($wph_upload);
+				if ($xmlNo == 1){
+					$xmlFile = upload_get_xml_file($wph_upload);
+					if ($xmlFile){
+						$INFO = upload_get_info($xmlFile);
+                        if (count($INFO)){
+                            $checkInf = upload_check_selected_all_images($wph_upload, $INFO);
+                            if($checkInf[0]){
+                                $fileche = upload_files_to_server($wph_upload, $INFO);
+                                if($fileche){
+                                    $newChe = upload_save_to_database($INFO, $fileche[1]);
+                                    if ($newChe[0]){
+                                        r('admin/imports/s/', 0);
+                                        $msgIcon = "success";
+                                        $msgError =  'Medicamentele au fost adaugate cu succes in platforma.'; 
+                                    }else{
+                                        $msgIcon = "warning";
+                                        $msgError = "Urmatoarele medicamente nu au fost importate: ";
+                                        for($ii = 0; $ii < count ($newChe[1]); $ii++){ $msgError .= $newChe[1][$ii].', '; }
+                                        $msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+                                    }
+                                }else{
+                                    $msgIcon = "warning";
+                                    $msgError = "Urmatoarele fisiere nu au fost incarcate: ";
+                                    for($ii = 0; $ii < count ($fileche[1]); $ii++){ $msgError .= $fileche[1][$ii].', '; }
+                                    $msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+                                }
+                            }else{
+                                $msgIcon = "warning";
+                                $msgError = "Nu au fost selectate toate imaginile declarate in fisierul de tip XML. Lipsesc fisierele: ";
+                                for($ii = 0; $ii < count ($checkInf[1]); $ii++){ $msgError .= $checkInf[1][$ii].', '; }
+                                $msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+                            }
+                        }else{
+                            $msgIcon = "warning";
+                            $msgError = "Fisierul de tip XML nu contine inregistrari corespunzatoare.";
+                            $msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+                        }
+					}else{
+						$msgIcon = "warning";
+						$msgError = "Nu a fost gasit nici un fisier de tip XML.";
+						$msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+					}
+				}elseif ($xmlNo == 0){
+					$msgIcon = "warning";
+					$msgError = "Nu a fost gasit nici un fisier de tip XML.";
+					$msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+				}else{
+					$msgIcon = "warning";
+					$msgError = "Ati selectat mai multe fisiere de tip XML.";
+					$msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
+				}
+			}else{
+				$msgIcon = "warning";
+				$msgError = "Exista fisiere a caror extensie nu este acceptata: ";
+				for($ii = 0; $ii < count ($check[1]); $ii++){ $msgError .= $check[1][$ii].', '; }
+				$msgError .= "aceste fisiere nu trebuie selectate.";
+				$msg_info = "<hr><font color='red'>".$msgError."</font><hr>";
 			}
 		}
 	}

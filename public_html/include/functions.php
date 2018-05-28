@@ -1,4 +1,4 @@
-<?PHP
+ <?PHP
 	//////////////////////////////////////////////////////////////
 	// PHP Web Pharmacy
 	// GIT: https://github.com/aaninu/PHPWebPharmacy
@@ -200,6 +200,13 @@
 		return (int)$dbr[0];
 	}
 	
+	/** Count total number of invoices from date */
+	function db_total_invoices_date($start, $stop){
+		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('invoice')." WHERE d_comanda >= '$start' AND d_comanda < '$stop';");
+		$dbr = $dbc->fetch_row();
+		return (int)$dbr[0];
+	}
+	
 	/** Check if exist product finded */
 	function db_exist_product_like($sFIND){
 		$dbc = db_connect()->query("SELECT COUNT(*) FROM ".db_table('products')." WHERE s_nume LIKE '%".$sFIND."%' OR s_descriere LIKE '%".$sFIND."%' OR s_Tip LIKE '%".$sFIND."%' OR s_Mod LIKE '%".$sFIND."%';");
@@ -223,6 +230,12 @@
 	/** Get user NAME using email */
 	function db_gNAME_account($sEMAIL){
 		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('users')." WHERE s_email = '$sEMAIL';"),MYSQLI_ASSOC);
+		return $dbr["s_nume"]." ".$dbr["s_prenume"];
+	}
+	
+	/** Get user NAME using id */
+	function db_gNAME_account_id($iID){
+		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('users')." WHERE id = '$iID';"),MYSQLI_ASSOC);
 		return $dbr["s_nume"]." ".$dbr["s_prenume"];
 	}
 	
@@ -390,7 +403,7 @@
 		$dbr=mysqli_fetch_array(mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE id = '$iID';"),MYSQLI_ASSOC);
 		return array($dbr["s_nume"], $dbr["s_pret"], $dbr["s_moneda"], $dbr["i_cantitate"], $dbr["s_reducere"], $dbr["s_descriere"], $dbr["s_Tip"], $dbr["s_Mod"], $dbr["d_expirare"], $dbr["s_imagine"]);
 	}
-	
+		
 	/** Get total price from invoice */
 	function db_gTOTAL_invoice($iID){
 		$total = 0;
@@ -427,14 +440,11 @@
 	
 	/** Update invoice status */
 	function db_update_invoice_status($iINVOICE, $sSTATUS, $sORDER, $sCOMM){
-		echo $iINVOICE;
-		echo $PayM = db_gPAYM_invoice($iINVOICE);
-		echo $PayD = db_gPAYD_invoice($iINVOICE);
+		$PayM = db_gPAYM_invoice($iINVOICE);
+		$PayD = db_gPAYD_invoice($iINVOICE);
 		if($PayM and $PayD){
-			echo "DA";
 			return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = '$sSTATUS', s_comanda = '$sORDER', s_comm = '$sCOMM', s_n_pharmacy = '".g_uNAME()."', s_d_order = '".time()."' WHERE id = '$iINVOICE';");
 		}else{
-			echo "NU";
 			return db_connect()->query("UPDATE ".db_table('invoice')." SET s_status = '$sSTATUS', s_comanda = '$sORDER', s_comm = '$sCOMM', s_payment = 'Ramburs', s_d_pay = '".time()."', s_n_pharmacy = '".g_uNAME()."', s_d_order = '".time()."' WHERE id = '$iINVOICE';");
 		}
 	}
@@ -602,3 +612,196 @@
 		return round($price - $productDISCOUNT - $fullDISCOUNT, 2);
 	}
 	
+	/** Check if are correct files */
+	function upload_check_extension($files){
+		$acceptedFiled = True;
+		$notAvaibleFiles = array();
+		$notCount = 0;
+		$total = count($files['name']);
+		for( $i=0 ; $i < $total ; $i++ ) {
+			$tmpFilePath = $files['tmp_name'][$i];
+			if ($tmpFilePath != ""){
+				$newFilePath = s('FILE_DIR').basename($files['name'][$i]);
+				$imageFileType = pathinfo($newFilePath, PATHINFO_EXTENSION);
+				$aux_ext = strtolower($imageFileType);
+				if ($aux_ext == "png" or $aux_ext == "jpg" or $aux_ext == "jpeg" or $aux_ext == "gif" or $aux_ext == "xml"){
+				}else{
+					$notAvaibleFiles[$notCount] = $files['name'][$i];
+					$notCount ++;
+					$acceptedFiled = False;
+				}
+			}
+		}
+		return array($acceptedFiled, $notAvaibleFiles);
+	}
+	
+	/** Check if exist multiple XML file */
+	function upload_check_multiple_xml($files){
+		$xmlNo = 0;
+		$total = count($files['name']);
+		for( $i=0 ; $i < $total ; $i++ ) {
+			$tmpFilePath = $files['tmp_name'][$i];
+			if ($tmpFilePath != ""){
+				$newFilePath = s('FILE_DIR').basename($files['name'][$i]);
+				$imageFileType = pathinfo($newFilePath, PATHINFO_EXTENSION);
+				$aux_ext = strtolower($imageFileType);
+				if ($aux_ext == "xml") $xmlNo ++;
+			}
+		}
+		return $xmlNo;
+	}
+	
+	/** Get XML File */
+	function upload_get_xml_file($files){
+		$XML_File = null;
+		$total = count($files['name']);
+		for( $i=0 ; $i < $total ; $i++ ) {
+			$tmpFilePath = $files['tmp_name'][$i];
+			if ($tmpFilePath != ""){
+				$newFilePath = s('FILE_DIR').basename($files['name'][$i]);
+				$imageFileType = pathinfo($newFilePath, PATHINFO_EXTENSION);
+				$aux_ext = strtolower($imageFileType);
+				if ($aux_ext == "xml"){
+					$XML_File = $tmpFilePath;
+				}
+			}
+		}
+		return $XML_File;
+	}
+	
+	/** Get information from XML file */
+	function upload_get_info($xmlFile){
+		$get = file_get_contents($xmlFile);
+		$prodInfo = simplexml_load_string($get);
+		$INFO = array();
+		$INFO_c = 0;
+        $INFO_exist = 0;
+		foreach($prodInfo as $i => $val ){
+			$aux = array();
+            $INFO_exist = 0;
+			foreach($val as $j => $val2){
+                $INFO_exist ++;
+				$aux[$j] = $val2;
+			}
+			if($INFO_exist == 10){
+                $INFO[$INFO_c] = $aux;
+                $INFO_c++;   
+            }
+		}
+		return $INFO;
+	}
+
+    /** Check file if exist in select area */
+    function upload_check_file_exist($files, $myFile){
+        $notCount = False;
+        $total = count($files['name']);
+        for( $i=0 ; $i < $total ; $i++ ) {
+            if ($files['name'][$i] == $myFile){
+                $notCount = True;
+                break;
+            }
+        }
+        return $notCount;
+    }
+
+    /** Check if exist all images from */
+    function upload_check_selected_all_images($files, $info){
+        $fileList = array();
+        $fCo = 0;
+        $cStatus = True;
+        foreach($info as $i => $va){
+            if (!upload_check_file_exist($files, $va["IMAGINE"])){
+                $cStatus = False;
+                $fileList[$fCo] = $va["IMAGINE"];
+                $fCo++;
+            }
+        }
+        return array($cStatus, $fileList);
+    }
+
+    /** Check file if exist in my array */
+    function upload_check_exist_in_array($INFO, $fileName){
+        $status = False;
+        foreach($INFO as $i => $va){
+            if ($va["IMAGINE"] == $fileName){
+                $status = True;
+            }
+        }
+        return $status;
+    }
+
+    /** Upload images to server and return list with new names */
+    function upload_files_to_server($files, $INFO){
+        $status = True;
+        $uInfo = array();
+        $cInfo = 0;
+        $uPASS = array();
+        $cPASS = 0;
+        $total = count($files['name']);
+		for( $i=0 ; $i < $total ; $i++ ) {
+            if (upload_check_exist_in_array($INFO, $files["name"][$i])){
+                if ($files["error"][$i] == 0){
+                    $target_file = s('FILE_DIR').basename($files["name"][$i]);
+                    $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+                    $aux_ext = strtolower($imageFileType);
+                    $save_name = g_uID()."_".time()."_".md5(basename($files["name"][$i])).".".$imageFileType;
+                    $save_to = s('FILE_DIR').$save_name;
+                    if (move_uploaded_file($files["tmp_name"][$i], $save_to)){
+                        $uPASS[$cPASS] = $save_name;
+                        $cPASS++;
+                    }else{
+                        $uInfo[$cInfo] = $files["name"][$i];
+                        $cInfo++;
+                        $status = False;
+                    }
+                }else{
+                    $uInfo[$cInfo] = $files["name"][$i];
+                    $cInfo++;
+                    $status = False;
+                }
+            }
+        }
+        if ($status)
+            return array(True, $uPASS);
+        else
+            return array(False, $uInfo);
+    }
+
+    /** Upload save information to database */
+    function upload_save_to_database($INFO, $file){
+        $status = True;
+        $eArray = array();
+        $eCo = 0;
+        foreach($INFO as $i => $va){
+            // DENUMIRE	PRET	MONEDA	CANTITATE	REDUCERE	DESCRIERE	TIPUL	ADMINISTRARE	EXPIRARE	IMAGINE
+            if (db_create_product($va["DENUMIRE"], $va["PRET"], $va["MONEDA"], $va["REDUCERE"], $va["CANTITATE"], $va["DESCRIERE"], $va["TIPUL"], $va["ADMINISTRARE"], u(s('FILE_URL').$file[$i]), strtotime($va["EXPIRARE"]))){
+                
+            }else{
+                $eArray[$eCo] = $va["DENUMIRE"];
+                $eCo ++;
+            }
+        }
+        return array($status, $eArray);
+    }
+	
+	/** Update all products Count from invoice ID */
+	function update_invoice_products($sID){
+		if (db_gSTATUS_invoice($sID) == "PAID"){
+			if (db_gORDER_invoice($sID) == "OK"){
+				return True;
+			}else{
+				if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('invoice_items')." WHERE i_invoice = '$sID';")){
+					while ($info=mysqli_fetch_object($dbcon)){
+						$product_id = $info->i_product;
+						$product_count = $info->i_count;
+						db_connect()->query("UPDATE ".db_table('products')." SET i_cantitate = i_cantitate - '$product_count' WHERE id = '$product_id';");
+					}
+				}
+				return True;
+			}
+		}else{
+			return False;
+		}
+		
+	}
+

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Setari generale | Admin | <?=s('NAME');?></title>
+		<title>Importa medicamente | Admin | <?=s('NAME');?></title>
 		<?PHP include('./include/guest/multiple/head.php'); ?>
 		<link href="<?=u('public/toast/css/jquery.toast.css');?>" rel="stylesheet">
 		<script>
@@ -18,7 +18,7 @@
 					<ul>
 						<li><a href="<?=u();?>"><img width="14" height="13" alt="" src="<?=u('public/home/');?>images/home_icon.png" /></a></li>
 						<li><a href="<?=u('admin/settings/');?>">Administrare</a></li>
-						<li class="last-child"><a href="<?=u('admin/settings/');?>">Setari generale</a></li>
+						<li class="last-child"><a href="<?=u('admin/imports/');?>">Importa medicamente</a></li>
 					</ul>
 				</div>
 			</div>
@@ -34,38 +34,43 @@
 				<div class="left_contents">
 					<div class="accord">
 						<div class="block">
-							<div class="heading" style="background: #66b44d;">Setari generale</div>
+							<div class="heading" style="background: #66b44d;">Importa medicamente</div>
 							<div class="biodata-text-more block_display">
-								<form action="<?=u("admin/settings/");?>" method="POST">
+								<?=$msg_info;?>
+								<form action="<?=u("admin/imports/");?>" method="POST" enctype="multipart/form-data">
 									<table id='cart_table_admin'>
 										<tr>
-											<td>Reducere generala:</td>
+											<td>Important:</td>
 											<td>
-												<input type="text" name="wph_discount" value="<?=$wph_discount;?>" placeholder="Reducere generala" style="margin-bottom:  0px;width: 97%;" required> 
-											</td>
-										</tr>								
-										<tr>
-											<td>Despre noi:</td>
-											<td>
-												<textarea rows="5" name="wph_about" style="margin-bottom:  0px;width: 97%;" placeholder="Despre noi" required><?=$wph_about;?></textarea>
-											</td>
-										</tr>								
-										<tr>
-											<td>Cariere:</td>
-											<td>
-												<textarea rows="5" name="wph_carrers" style="margin-bottom:  0px;width: 97%;" placeholder="Cariere" required><?=$wph_carrers;?></textarea>
-											</td>
-										</tr>								
-										<tr>
-											<td>Rezervari & Plati:</td>
-											<td>
-												<textarea rows="5" name="wph_replati" style="margin-bottom:  0px;width: 97%;" placeholder="Rezervari & Plati" required><?=$wph_replati;?></textarea>
+												<font color="red">
+													*Dimensiunea maxima pentru imagini este de: <?=s('FILE_SIZE');?>MB;<br>
+													*Extensiile acceptate pentru imagini sunt: "png", "jpg", "jpeg", "gif";<br>
+													*Fisierul care contine informatiile trebuie sa fie in formatul XML;<br>
+													*Se poate incarca un sigur fisier XML pe formular;<br>
+													*Cand se doreste incarcarea in platforma, trebuie selectate toate fisierele (1 fisier XML si imaginile corespunzatoare);<br>
+													*In cazul in care una dintre imagini nu a fost selectata, incarcarea va fi anulata;<br>
+                                                    *Daca selectati imagini in plus, acestea vor fi ignorate.
+												</font>
 											</td>
 										</tr>
+										<tr>
+											<td>Template:</td>
+											<td>
+												Fisierul in format XML: <a href="<?=u('public/template/Template.xml');?>" target="_xml">Tempate.xml</a> <br>
+												Fisierul in format XLSX (Microsoft Excel): <a href="<?=u('public/template/Template.xlsx');?>" target="_xlsx">Tempate.xlsx</a>
+											</td>
+										</tr>
+										<tr>
+											<td>Incarca fisierele:</td>
+											<td>
+												<input name="upload[]" type="file" multiple="multiple" required />
+											</td>
+										</tr>								
+										
 										<tr>	
 											<td colspan="2">
 												<center>
-													<input class="button" style="background-color: #66b44d;" name="wph_change" type="submit" value="Salveaza modificarile">
+													<input class="button" style="background-color: #66b44d;" name="wph_get" type="submit" value="Incarca medicamentele">
 												</center>
 											</td>
 										</tr>

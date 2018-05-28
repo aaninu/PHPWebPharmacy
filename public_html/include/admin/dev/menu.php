@@ -9,4 +9,6 @@
 	<li><a href="<?=u('admin/scan-barcode/');?>">Scanare facturi</a></li>
 	<hr>
 	<li><a href="<?=u('admin/settings/');?>">Setari generale</a></li>
+	<li><a href="<?=u('admin/reports/');?>">Rapoarte de vanzari</a></li>
+	<li><a href="<?=u('admin/imports/');?>">Importa medicamente</a></li>
 </ul>

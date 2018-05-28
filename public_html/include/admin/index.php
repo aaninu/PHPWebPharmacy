@@ -33,10 +33,6 @@
 				<div class="left_contents">
 					<div class="accord">
 						<div class="block">
-							<div class="heading" style="background: #66b44d;">Administrare</div>
-							<div class="biodata-text-more block_display">
-								In progress
-							</div>
 <?PHP if($readError){ ?>
 							<div class="heading" style="background: #ee948a;">Produse in cantitate sub limita impusa</div>
 							<div class="biodata-text-more block_display">
@@ -73,6 +69,41 @@
 								</table>
 							</div>
 <?PHP } ?>
+							<div class="heading" style="background: #c36c2e;">Medicamente care se apropie de expirare</div>
+							<div class="biodata-text-more block_display">
+								<table id='cart_table_admin'>
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>DENUMIRE</th>
+											<th>BUC.</th>
+											<th style="width: 100px;">PRET</th>
+											<th>DATA EXPIRARII</th>
+											<th>Modifica</th>
+										</tr>
+									</thead>
+									<tbody>
+<?PHP
+	$exist = False;
+	$pos = 1;
+	if ($dbcon = mysqli_query(db_connect(), "SELECT * FROM ".db_table('products')." WHERE d_expirare < '".time()+s('LIM_TIME')."' ORDER BY id ASC;")){
+		while ($info=mysqli_fetch_object($dbcon)){ $exist = True;
+			$pos++;
+?>
+										<tr>
+											<td><?=$pos;?></td>
+											<td class="txt-oflo"><a href="<?=u('admin/products-info/'.sMyID($info->id).'/');?>"><?=$info->s_nume;?></a></td>
+											<td id="cce"><b><?=$info->i_cantitate;?></b></td>
+											<td id="cce">
+												<?PHP $newPRET = finalPRICE($info->s_pret, $info->s_reducere); $pret = round($info->s_pret,2); if ($newPRET != $pret){ echo "<del style='color:red;'>" .$pret.'</del> '.$newPRET. ' '.$info->s_moneda; }else{ echo $pret.' '.$info->s_moneda; }?>
+											</td>
+											<td id="cce"><?=date("d-m-Y", $info->d_expirare);?></td>
+											<td><a href="<?=u('admin/products-edit/'.sMyID($info->id).'/');?>">Modifica</a></td>
+										</tr>
+<?PHP } } if ($exist == False){ echo "<tr><td colspan='6'><center>Nu exista medicamente pe cale sa expire.</center></td></tr>"; } ?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
