@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MEDICAMENTE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<INFO>
+		<DENUMIRE>Demo</DENUMIRE>
+		<PRET>10</PRET>
+		<MONEDA>RON</MONEDA>
+		<CANTITATE>20</CANTITATE>
+		<REDUCERE>0</REDUCERE>
+		<DESCRIERE>Demo desc</DESCRIERE>
+		<TIPUL>supliment</TIPUL>
+		<ADMINISTRARE>1 / zi</ADMINISTRARE>
+		<EXPIRARE>20.12.2018</EXPIRARE>
+		<IMAGINE>file.png</IMAGINE>
+	</INFO>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+	<INFO/>
+</MEDICAMENTE>
