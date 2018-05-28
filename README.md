@@ -37,8 +37,8 @@ contact@webpharmacy.aninu.xyz
   - [x] Admin - Users;
   - [x] Admin - Scan Barcode;
   - [x] Admin - General Settings;
-  - [ ] Admin - Orders Report {In progress};
-  - [ ] Admin - Import medines;
+  - [x] Admin - Orders Report;
+  - [x] Admin - Import medines;
   - [x] Admin - Invoices;
 
 # Contain:
@@ -49,6 +49,3 @@ contact@webpharmacy.aninu.xyz
   - [x] Scan Barcode with camera;
   - [x] Payment with Paypal;
   
-  
-
-In progress ...
