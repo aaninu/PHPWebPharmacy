@@ -1,6 +1,6 @@
--- ------------------------------------
--- Table structure for `webph_products`
--- ------------------------------------
+--
+-- Structura de tabel pentru tabelul `webph_products`
+--
 
 CREATE TABLE `webph_products` (
   `id` int(11) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE `webph_products` (
   `s_pret` varchar(25) NOT NULL DEFAULT '0',
   `s_moneda` varchar(25) NOT NULL,
   `s_reducere` varchar(25) NOT NULL DEFAULT '0',
-  `i_cantitate` int(11) NOT NULL DEFAULT '1',
+  `i_cantitate` int(11) NOT NULL DEFAULT 1,
   `s_descriere` longtext NOT NULL,
   `s_Tip` longtext NOT NULL,
   `s_Mod` longtext NOT NULL,
@@ -17,13 +17,17 @@ CREATE TABLE `webph_products` (
   `d_expirare` varchar(25) NOT NULL,
   `d_public` varchar(25) DEFAULT NULL,
   `d_edit` varchar(25) DEFAULT NULL,
-  `i_views` int(11) NOT NULL DEFAULT '0'
+  `i_views` int(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
 -- Indexes for table `webph_products`
+--
 ALTER TABLE `webph_products`
   ADD PRIMARY KEY (`id`);
 
+--
 -- AUTO_INCREMENT for table `webph_products`
+--
 ALTER TABLE `webph_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
